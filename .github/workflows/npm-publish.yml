@@ -20,8 +20,9 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
   discord_webhook:
+    needs: publish
     runs-on: ubuntu-latest
-    name: Discord notify via webhook
+    name: Discord notification
     steps:
       - uses: actions/checkout@v2
       - name: Default
