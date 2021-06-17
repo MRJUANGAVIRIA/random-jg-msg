@@ -20,14 +20,26 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
   discord_webhook:
-    needs: publish
     runs-on: ubuntu-latest
-    name: Discord notification
+    name: Discord notify via webhook
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
       - name: Default
-        uses: appleboy/discord-action@master
-        with:
-          webhook_id: ${{ secrets.WEBHOOK_ID }}
-          webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
-          args: The ${{ github.event_name }} event triggered first step.
+        uses: up9cloud/action-notify@master
+        if: cancelled() == false
+        env:
+          GITHUB_JOB_STATUS: ${{ job.status }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
+
+  # discord_webhook:
+  #   needs: publish
+  #   runs-on: ubuntu-latest
+  #   name: Discord notification
+  #   steps:
+  #     - uses: actions/checkout@master
+  #     - name: Default
+  #       uses: appleboy/discord-action@master
+  #       with:
+  #         webhook_id: ${{ secrets.WEBHOOK_ID }}
+  #         webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+  #         args: The ${{ github.event_name }} event triggered first step.
