@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -18,3 +18,13 @@ jobs:
       - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+  notify:
+    needs: publish
+    env:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+    uses: Ilshidur/action-discord@master
+    with:
+      args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed.'
+
+
