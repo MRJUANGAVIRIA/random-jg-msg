@@ -19,12 +19,14 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
-  notify:
-    needs: publish
-    env:
-      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-    uses: Ilshidur/action-discord@master
-    with:
-      args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed.'
-
-
+  discord_webhook:
+    runs-on: ubuntu-latest
+    name: Discord notify via webhook
+    steps:
+      - uses: actions/checkout@v2
+      - name: Default
+        uses: up9cloud/action-notify@master
+        if: cancelled() == false
+        env:
+          GITHUB_JOB_STATUS: ${{ job.status }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
