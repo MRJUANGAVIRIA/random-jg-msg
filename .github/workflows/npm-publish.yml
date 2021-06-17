@@ -24,10 +24,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Discord notification
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@master
       - name: Default
-        uses: up9cloud/action-notify@master
-        if: cancelled() == false
-        env:
-          GITHUB_JOB_STATUS: ${{ job.status }}
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: appleboy/discord-action@master
+        with:
+          webhook_id: ${{ secrets.WEBHOOK_ID }}
+          webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+          args: The ${{ github.event_name }} event triggered first step.
