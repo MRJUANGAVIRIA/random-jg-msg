@@ -1,6 +1,6 @@
 {
   "name": "random-jg-messages",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Random Messages",
   "main": "index.js",
   "scripts": {
